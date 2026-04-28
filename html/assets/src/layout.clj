@@ -2,10 +2,10 @@
   (:require
    [clojure.java.io]
    [selmer.parser :as parser]
-   [ring.util.http-response :refer [content-type ok]]
+   [ring.util.http-response :refer [ok]]
+   [ring.util.response :as response]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
-   [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
-   [ring.util.response]))
+   [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]))
 
 (def selmer-opts {:custom-resource-path (clojure.java.io/resource "html")})
 
@@ -21,7 +21,7 @@
                           (assoc params :page template :csrf-token *anti-forgery-token*)
                           selmer-opts)
       (ok)
-      (content-type "text/html; charset=utf-8")))
+      (response/content-type "text/html; charset=utf-8")))
 
 (defn error-page
   "error-details should be a map containing the following keys:
